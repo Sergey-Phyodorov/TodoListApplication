@@ -1,0 +1,46 @@
+.todo-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 2px solid;
+    padding: 15px;
+}
+
+.todo-item__textarea {
+    font-size: 20px;
+    color: rgba(255, 255, 255, 1);
+    border: solid 2px rgba(255, 255, 255, 1);
+    background-color: rgba(40, 44, 52, 0.5);
+    width: 100%;
+    resize: none;
+    margin-left: 20px;
+}
+
+.todo-item__text {
+    color: rgba(255, 255, 255, 1);
+    width: 100%;
+    text-align: justify;
+    text-indent: 30px;
+    padding-left: 15px;
+}
+
+.todo-item--done .todo-item__text {
+    text-decoration: line-through;
+}
+
+.todo-item__icon {
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+
+.todo-item__icon--delete:hover {
+color: rgb(242 52 89)
+}
+
+.todo-item__actions {
+    display: flex;
+    padding-left: 15px;
+}
+
+

@@ -1,0 +1,8 @@
+.field-element-todo__delete-icon {
+    padding-left: 5px;
+}
+
+.field-element-todo__delete-icon--hover:hover {
+    color: rgba(255, 0, 0, 0.55);
+    cursor: pointer;
+}

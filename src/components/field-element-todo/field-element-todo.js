@@ -1,4 +1,6 @@
 import { useEffect, useState } from 'react';
+import { useContext } from 'react';
+import { TodoListContext } from '../../context/todo-list-context';
 import './field-element-todo.css';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -10,6 +12,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 
 export function FieldElementTodo({ id, todo, isDone, changeTodoFlag }) {
+	// const [toDoList] = useContext(TodoListContext);
 	const [isComplete, setIsComplete] = useState(null);
 	const [isEdit, setIsEdit] = useState(false);
 	const [textArea, setTextArea] = useState(todo);
@@ -45,6 +48,7 @@ export function FieldElementTodo({ id, todo, isDone, changeTodoFlag }) {
 					`Задача удален, id - ${id}, ответ от сервера:`,
 					response,
 				);
+				// console.log(`${toDoList.id}`);
 				changeTodoFlag();
 			});
 	}
@@ -66,6 +70,7 @@ export function FieldElementTodo({ id, todo, isDone, changeTodoFlag }) {
 					<FontAwesomeIcon icon={faSquare} />
 				)}
 			</span>
+
 			{isEdit ? (
 				<textarea
 					className="field-element-todo__textarea"
@@ -90,7 +95,7 @@ export function FieldElementTodo({ id, todo, isDone, changeTodoFlag }) {
 						}
 					}}>
 					<FontAwesomeIcon
-						className="field-element-todo__edit-icon 
+						className="field-element-todo__edit-icon
 						field-element-todo__edit-icon--hover"
 						icon={faPenToSquare}
 					/>

@@ -1,0 +1,39 @@
+/* Блок */
+.items-sort {
+
+    /*padding-left: 10px;*/
+
+
+    /*display: flex; !* Для выравнивания иконок внутри *!*/
+    /*align-items: center; !* Выравнивание иконок по центру по вертикали *!*/
+    /*justify-content: center; !* Выравнивание иконок по центру по горизонтали *!*/
+
+}
+
+/* Элементы */
+.items-sort__icon {
+
+}
+
+/* Модификаторы */
+.items-sort__icon--across-line {
+    /* Специальные стили для иконки across line */
+}
+
+.items-sort__icon--az {
+    /* Специальные стили для иконки A-Z */
+}
+
+.items-sort__icon--za {
+    /* Специальные стили для иконки Z-A */
+}
+
+/* Стили для состояний, например, при наведении или фокусе */
+.items-sort:hover,
+.items-sort:focus {
+
+}
+
+.items-sort:active {
+
+}

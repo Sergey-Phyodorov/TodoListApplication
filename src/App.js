@@ -1,101 +1,99 @@
 import './App.css';
-import '@fortawesome/fontawesome-svg-core/styles.css';
-import { FieldElementTodo } from './components/field-element-todo/field-element-todo';
-import { InputCreatingTodo } from './components/input-creating-todo/input-creating-todo';
-import { InputSearchTodo } from './components/input-search-todo/input-search-todo';
-import { Spinner } from './components/spinner/spinner';
+import { readTodo, updateTodo, deleteTodo, createTodo } from './api/api';
+
+import { setTodo } from './utilities/set-todo';
+import { removeTodo } from './utilities/remove-todo';
+import { findTodo } from './utilities/find-todo';
+import { addTodo } from './utilities/add-todo';
+
+import { TodoListItems } from './components/TodoListItems/TodoListItems';
 
 import { useEffect, useState } from 'react';
+import { Header } from './components/Header/Header';
+import { ControlsPanel } from './components/ControlsPanel/ControlsPanel';
+import { TodoListContext } from './context/todo-list-context';
+import { NEW_TODO_ID } from './constants/new-todo-id';
 
 function App() {
-	const [addTodoFlag, setAddTodoFlag] = useState(false);
-	const [isLoading, setIsLoading] = useState(false);
-	const [toDoList, setToDoList] = useState([]);
-	const [originalToDoList, setOriginalToDoList] = useState([]);
-	const [isSorted, setIsSorted] = useState(false);
-	const changeTodoFlag = () => setAddTodoFlag(!addTodoFlag);
+	const [todoList, setTodoList] = useState([]);
+	const [todoListCanselEdit, setTodoListCanselEdit] = useState(todoList);
 
 	useEffect(() => {
-		setIsLoading(true);
+		readTodo().then((loadedTodoList) => setTodoList(loadedTodoList));
+	}, []);
 
-		fetch('http://localhost:3005/myTodo')
-			.then((loadedDate) => loadedDate.json())
-			.then((loadedTodoList) => {
-				setToDoList(loadedTodoList);
-				setOriginalToDoList(loadedTodoList);
-				console.log(loadedTodoList);
-			})
-			.catch((error) => console.log(error))
-			.finally(() => setIsLoading(false));
-	}, [addTodoFlag]);
-
-	const toggleSort = () => {
-		if (!isSorted) {
-			const sortedList = [...toDoList].sort((a, b) =>
-				a.todo.localeCompare(b.todo),
-			);
-			setToDoList(sortedList);
-		} else {
-			setToDoList(originalToDoList);
-		}
-		setIsSorted(!isSorted);
+	const onTodoTitleAdd = () => {
+		setTodoList(addTodo(todoList));
 	};
-
-	const debounce = (func, debounceTime) => {
-		let timeout;
-		return function (...args) {
-			clearTimeout(timeout);
-			timeout = setTimeout(() => {
-				func(...args);
-			}, debounceTime);
-		};
+	const onTodoTitleChange = (id, changTitle) => {
+		const updatedList = setTodo(todoList, { id, todoTitle: changTitle });
+		setTodoList(updatedList);
 	};
+	const onTodoTitleEdit = (id) => {
+		setTodoListCanselEdit(findTodo(todoList, id));
+		const updatedList = setTodo(todoList, { id, isEditing: true });
+		setTodoList(updatedList);
+	};
+	const onTodoTitleSave = (idTodo) => {
+		const newTodoTitle = findTodo(todoList, idTodo) || {};
 
-	// Функция поиска
-	const searchTodoList = (event) => {
-		const searchQuery = event.target.value;
-		if (!searchQuery.trim()) {
-			// Если поисковой запрос пуст, возвращаем оригинальный список
-			setToDoList(originalToDoList);
+		if (idTodo === NEW_TODO_ID) {
+			createTodo(newTodoTitle).then((todo) => {
+				let updatedList = setTodo(todoList, {
+					id: NEW_TODO_ID,
+					isEditing: false,
+				});
+				updatedList = removeTodo(updatedList, NEW_TODO_ID);
+				updatedList = addTodo(updatedList, todo);
+				setTodoList(updatedList);
+			});
 		} else {
-			// Фильтруем список по запросу
-			const filteredList = originalToDoList.filter((todo) =>
-				todo.todo.toLowerCase().includes(searchQuery.toLowerCase()),
-			);
-			setToDoList(filteredList);
+			updateTodo(idTodo, newTodoTitle).then();
+			const updatedList = setTodo(todoList, { idTodo, isEditing: false });
+			setTodoList(updatedList);
 		}
 	};
-
-	// Создаём дебаунсированную версию функции поиска
-	const debouncedSearch = debounce(searchTodoList, 500);
+	const onTodoTitleCancel = (id) => {
+		const updatedList = setTodo(todoList, {
+			id,
+			todoTitle: todoListCanselEdit.todoTitle,
+			isEditing: false,
+		});
+		setTodoList(updatedList);
+	};
+	const onTodoTitleDelete = (id) => {
+		if (window.confirm('Вы уверены, что хотите удалить эту задачу?')) {
+			deleteTodo(id).then(() => {
+				setTodoList(removeTodo(todoList, id));
+			});
+		}
+	};
+	const onTodoTitleIsDone = (id) => {
+		const isDone = findTodo(todoList, id).isDone;
+		const updatedList = setTodo(todoList, { id, isDone: !isDone });
+		updateTodo(id, { isDone: !isDone }).then();
+		setTodoList(updatedList);
+	};
 
 	return (
-		<div className="app">
-			<main className="app__main">
-				<h1 className="app__title">Todo List Application</h1>
-				<InputSearchTodo
-					searchTodoList={debouncedSearch}
-					toggleSort={toggleSort}
-					isSorted={isSorted}
-				/>
-
-				<InputCreatingTodo changeTodoFlag={changeTodoFlag} />
-
-				<ul className="app__list fa-ul">
-					{toDoList.map(({ id, todo, isDone }) => (
-						<FieldElementTodo
-							key={id}
-							id={id}
-							todo={todo}
-							isDone={isDone}
-							changeTodoFlag={changeTodoFlag}
-						/>
-					))}
-				</ul>
-
-				<Spinner isLoading={isLoading} />
-			</main>
-		</div>
+		<TodoListContext.Provider
+			value={{
+				todoList,
+				onTodoTitleEdit,
+				onTodoTitleChange,
+				onTodoTitleCancel,
+				onTodoTitleSave,
+				onTodoTitleDelete,
+				onTodoTitleIsDone,
+			}}>
+			<div className="app">
+				<main className="app__main">
+					<Header />
+					<ControlsPanel onTodoTitleAdd={onTodoTitleAdd} />
+					<TodoListItems />
+				</main>
+			</div>
+		</TodoListContext.Provider>
 	);
 }
 

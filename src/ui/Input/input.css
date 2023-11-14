@@ -1,0 +1,29 @@
+.input-block {
+    display: flex;
+    position: relative;
+    width: 100%;
+    margin: 10px;
+}
+
+.input-block__input {
+    width: 100%;
+    font-size: 20px;
+    padding: 10px 15px 10px 45px;
+    color: rgba(255, 255, 255, 1);
+    border: solid 2px rgba(255, 255, 255, 1);
+    background-color: rgba(40, 44, 52, 0.5);
+    margin: 10px;
+    box-sizing: border-box;
+}
+
+.items-block__icon {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    padding: 11px;
+    color: rgb(116, 116, 116);
+}
+
+.input-block__input:focus + .items-block__icon {
+    color: rgb(255 212 59);
+}

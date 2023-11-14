@@ -1,0 +1,7 @@
+
+.fa-ul2 {
+    list-style-type: none;
+    margin-left: var(--fa-li-margin, 2.5em);
+    padding-left: 0; }
+.fa-ul2 > li {
+    position: relative; }
