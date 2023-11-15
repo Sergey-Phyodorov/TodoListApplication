@@ -1,5 +1,5 @@
 import './App.css';
-
+import { Routes, Route, Link } from 'react-router-dom';
 import { readTodo, updateTodo, deleteTodo, createTodo } from './api/api';
 
 import { setTodo } from './utilities/set-todo';
@@ -7,13 +7,14 @@ import { removeTodo } from './utilities/remove-todo';
 import { findTodo } from './utilities/find-todo';
 import { addTodo } from './utilities/add-todo';
 
-import { TodoListItems } from './components/TodoListItems/TodoListItems';
-
 import { useEffect, useState } from 'react';
-import { Header } from './components/Header/Header';
-import { ControlsPanel } from './components/ControlsPanel/ControlsPanel';
+
 import { TodoListContext } from './context/todo-list-context';
 import { NEW_TODO_ID } from './constants/new-todo-id';
+
+import { HomePage } from './pages/HomePage/HomePage';
+import { NotFoundPage } from './pages/NotFoundPage/NotFoundPage';
+import { Header } from './components/Header/Header';
 
 function App() {
 	const [todoList, setTodoList] = useState([]);
@@ -97,6 +98,7 @@ function App() {
 			value={{
 				todoList,
 				isDisabledButton,
+				onTodoTitleAdd,
 				onTodoTitleEdit,
 				onTodoTitleChange,
 				onTodoTitleCancel,
@@ -107,10 +109,12 @@ function App() {
 			<div className="app">
 				<main className="app__main">
 					<Header />
-
-					<ControlsPanel onTodoTitleAdd={onTodoTitleAdd} />
-
-					<TodoListItems />
+					<Routes>
+						<Route path="/" element={<HomePage />} />
+						<Route path="/task/" element={'Я таска'} />
+						{/*// добавить страницу 404 для ошибок по id надо сделать компонент для таски НОТФАУНД*/}
+						<Route path="*" element={<NotFoundPage />} />
+					</Routes>
 				</main>
 			</div>
 		</TodoListContext.Provider>

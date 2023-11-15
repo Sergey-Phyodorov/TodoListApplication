@@ -13,8 +13,8 @@ import {
 	faArrowDownUpAcrossLine,
 } from '@fortawesome/free-solid-svg-icons';
 
-export function ControlsPanel({ onTodoTitleAdd }) {
-	const { isDisabledButton } = useContext(TodoListContext);
+export function ControlsPanel() {
+	const { isDisabledButton, onTodoTitleAdd } = useContext(TodoListContext);
 
 	return (
 		<div>
