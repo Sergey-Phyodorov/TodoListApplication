@@ -12,13 +12,7 @@ import {
 import { Button } from '../../ui/Button/Button';
 import { TodoListContext } from '../../context/todo-list-context';
 
-export const TodoItem = ({
-	id,
-	todoTitle,
-	isDone,
-	isEditing,
-	isDisabledButton,
-}) => {
+export const TodoItem = ({ id, todoTitle, isDone, isEditing }) => {
 	const {
 		onTodoTitleEdit,
 		onTodoTitleChange,
@@ -26,6 +20,7 @@ export const TodoItem = ({
 		onTodoTitleSave,
 		onTodoTitleDelete,
 		onTodoTitleIsDone,
+		isDisabledButton,
 	} = useContext(TodoListContext);
 
 	return (

@@ -15,8 +15,6 @@ export const ItemsSort = () => {
 		console.log(isSortingEnabled);
 	};
 
-	let isSorted = false;
-
 	return (
 		<button className="items-sort" onClick={onSortingChange}>
 			<FontAwesomeIcon

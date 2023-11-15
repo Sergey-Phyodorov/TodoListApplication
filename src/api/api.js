@@ -1,5 +1,4 @@
 const fetchServer = (method, { id, ...payload } = {}) => {
-	console.log('fetchServer', method, id, payload);
 	let url = 'http://localhost:3005/myTodo';
 	let options = {
 		method,
