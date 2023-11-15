@@ -1,7 +1,7 @@
 {
   "myTodo": [
     {
-      "todoTitle": "Улучшить распорядок дня 4",
+      "todoTitle": "Улучшить распорядок дня",
       "isDone": false,
       "id": 1
     },
@@ -11,7 +11,7 @@
       "id": 2
     },
     {
-      "todoTitle": "Заказать новые кроссовки и не только",
+      "todoTitle": "Заказать новые кроссовки и не только d",
       "isDone": false,
       "id": 3
     },
@@ -214,21 +214,6 @@
       "todoTitle": "Сходить на концерт любимой группы",
       "isDone": false,
       "id": 43
-    },
-    {
-      "todoTitle": "dsfsdfsdf",
-      "isDone": false,
-      "id": 44
-    },
-    {
-      "todoTitle": "dsfdsfdsfdsf",
-      "isDone": false,
-      "id": 45
-    },
-    {
-      "todoTitle": "dsfsdfsdf",
-      "isDone": false,
-      "id": 46
     }
   ]
 }
