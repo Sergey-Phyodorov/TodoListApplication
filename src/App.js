@@ -47,7 +47,6 @@ function App() {
 		const newTodoTitle = findTodo(todoList, idTodo) || {};
 
 		if (idTodo === NEW_TODO_ID) {
-			console.log('onTodoTitleSave NEW_TODO_ID', idTodo, newTodoTitle);
 			createTodo(newTodoTitle).then((todo) => {
 				let updatedList = setTodo(todoList, {
 					id: NEW_TODO_ID,
