@@ -1,118 +1,40 @@
 import './App.css';
-import { Routes, Route, Link } from 'react-router-dom';
-import { readTodo, updateTodo, deleteTodo, createTodo } from './api/api';
-
-import { setTodo } from './utilities/set-todo';
-import { removeTodo } from './utilities/remove-todo';
-import { findTodo } from './utilities/find-todo';
-import { addTodo } from './utilities/add-todo';
+import { Routes, Route } from 'react-router-dom';
+import { readTodo } from './api/api';
 
 import { useEffect, useState } from 'react';
 
 import { TodoListContext } from './context/todo-list-context';
-import { NEW_TODO_ID } from './constants/new-todo-id';
 
 import { HomePage } from './pages/HomePage/HomePage';
 import { NotFoundPage } from './pages/NotFoundPage/NotFoundPage';
+
 import { Header } from './components/Header/Header';
+import { ItemCardPage } from './pages/ItemCardPage/ItemCardPage';
 
 function App() {
 	const [todoList, setTodoList] = useState([]);
-	const [todoListCanselEdit, setTodoListCanselEdit] = useState(todoList);
-	const [isDisabledButton, setIsDisabledButton] = useState(false);
 
 	useEffect(() => {
 		readTodo().then((loadedTodoList) => setTodoList(loadedTodoList));
 	}, []);
 
-	const onTodoTitleAdd = () => {
-		setIsDisabledButton(true);
-		setTodoList(addTodo(todoList));
-	};
-	const onTodoTitleChange = (id, changTitle) => {
-		const updatedList = setTodo(todoList, { id, todoTitle: changTitle });
-		setTodoList(updatedList);
-	};
-	const onTodoTitleEdit = (id) => {
-		setIsDisabledButton(true);
-		setTodoListCanselEdit(findTodo(todoList, id));
-
-		const updatedList = setTodo(todoList, {
-			id,
-			isEditing: true,
-		});
-		setTodoList(updatedList);
-	};
-	const onTodoTitleSave = (idTodo) => {
-		setIsDisabledButton(false);
-		const newTodoTitle = findTodo(todoList, idTodo) || {};
-
-		if (idTodo === NEW_TODO_ID) {
-			createTodo(newTodoTitle).then((todo) => {
-				let updatedList = setTodo(todoList, {
-					id: NEW_TODO_ID,
-					isEditing: false,
-				});
-				updatedList = removeTodo(updatedList, NEW_TODO_ID);
-				updatedList = addTodo(updatedList, todo);
-				setTodoList(updatedList);
-			});
-		} else {
-			updateTodo(idTodo, newTodoTitle).then();
-			const updatedList = setTodo(todoList, {
-				id: idTodo,
-				isEditing: false,
-			});
-			setTodoList(updatedList);
-		}
-	};
-	const onTodoTitleCancel = (id) => {
-		setIsDisabledButton(false);
-		if (id === NEW_TODO_ID) {
-			setTodoList(removeTodo(todoList, NEW_TODO_ID));
-			return;
-		}
-		const updatedList = setTodo(todoList, {
-			id,
-			todoTitle: todoListCanselEdit.todoTitle,
-			isEditing: false,
-		});
-		setTodoList(updatedList);
-	};
-	const onTodoTitleDelete = (id) => {
-		if (window.confirm('Вы уверены, что хотите удалить эту задачу?')) {
-			deleteTodo(id).then(() => {
-				setTodoList(removeTodo(todoList, id));
-			});
-		}
-	};
-	const onTodoTitleIsDone = (id) => {
-		const isDone = findTodo(todoList, id).isDone;
-		const updatedList = setTodo(todoList, { id, isDone: !isDone });
-		updateTodo(id, { isDone: !isDone }).then();
-		setTodoList(updatedList);
-	};
-
 	return (
 		<TodoListContext.Provider
 			value={{
 				todoList,
-				isDisabledButton,
-				onTodoTitleAdd,
-				onTodoTitleEdit,
-				onTodoTitleChange,
-				onTodoTitleCancel,
-				onTodoTitleSave,
-				onTodoTitleDelete,
-				onTodoTitleIsDone,
+				setTodoList,
 			}}>
 			<div className="app">
 				<main className="app__main">
 					<Header />
 					<Routes>
 						<Route path="/" element={<HomePage />} />
-						<Route path="/task/" element={'Я таска'} />
-						{/*// добавить страницу 404 для ошибок по id надо сделать компонент для таски НОТФАУНД*/}
+						<Route
+							path="/todo/:idTodoPage"
+							element={<ItemCardPage />}
+						/>
+
 						<Route path="*" element={<NotFoundPage />} />
 					</Routes>
 				</main>

@@ -1,33 +1,71 @@
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 import './todo-item.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
 	faCheckSquare,
 	faSquare,
-	faPenToSquare,
 	faFloppyDisk,
 	faShareFromSquare,
-	faTrash,
 } from '@fortawesome/free-solid-svg-icons';
 import { Button } from '../../ui/Button/Button';
 import { TodoListContext } from '../../context/todo-list-context';
+import { Link } from 'react-router-dom';
+import { setTodo } from '../../utilities/set-todo';
+import { NEW_TODO_ID } from '../../constants/new-todo-id';
+import { removeTodo } from '../../utilities/remove-todo';
+import { findTodo } from '../../utilities/find-todo';
+import { createTodo, updateTodo } from '../../api/api';
+import { addTodo } from '../../utilities/add-todo';
 
 export const TodoItem = ({ id, todoTitle, isDone, isEditing }) => {
-	const {
-		onTodoTitleEdit,
-		onTodoTitleChange,
-		onTodoTitleCancel,
-		onTodoTitleSave,
-		onTodoTitleDelete,
-		onTodoTitleIsDone,
-		isDisabledButton,
-	} = useContext(TodoListContext);
+	const { todoList, setTodoList } = useContext(TodoListContext);
+
+	const [todoListCanselEdit, setTodoListCanselEdit] = useState(todoList);
+	const onTodoAddCancel = (id) => {
+		// setIsDisabledButton(false);
+		if (id === NEW_TODO_ID) {
+			setTodoList(removeTodo(todoList, NEW_TODO_ID));
+			return;
+		}
+		const updatedList = setTodo(todoList, {
+			id,
+			todoTitle: todoListCanselEdit.todoTitle,
+			isEditing: false,
+		});
+		setTodoList(updatedList);
+	};
+	const onTodoAddChange = (id, changTitle) => {
+		const updatedDescription = setTodo(todoList, {
+			id,
+			todoTitle: changTitle,
+		});
+		setTodoList(updatedDescription);
+	};
+	const onTodoAddSave = (idTodo) => {
+		// setIsDisabledButton(false);
+		const newTodoTitle = findTodo(todoList, idTodo) || {};
+
+		createTodo(newTodoTitle).then((todo) => {
+			let updatedList = setTodo(todoList, {
+				id: NEW_TODO_ID,
+				isEditing: false,
+			});
+			updatedList = removeTodo(updatedList, NEW_TODO_ID);
+			updatedList = addTodo(updatedList, todo);
+			setTodoList(updatedList);
+		});
+	};
+
+	const onTodoIsDone = (id) => {
+		const isDone = findTodo(todoList, id).isDone;
+		const updatedList = setTodo(todoList, { id, isDone: !isDone });
+		updateTodo(id, { isDone: !isDone }).then();
+		setTodoList(updatedList);
+	};
 
 	return (
 		<li className={`todo-item ${isDone ? 'todo-item--done' : ''}`}>
-			<Button
-				isDisabledButton={isDisabledButton}
-				onClick={() => onTodoTitleIsDone(id)}>
+			<Button onClick={() => onTodoIsDone(id)}>
 				{isDone ? (
 					<FontAwesomeIcon
 						className="todo-item__icon"
@@ -48,26 +86,19 @@ export const TodoItem = ({ id, todoTitle, isDone, isEditing }) => {
 					className="todo-item__textarea"
 					rows="2"
 					value={todoTitle}
-					onChange={({ target }) =>
-						onTodoTitleChange(id, target.value)
-					}
-					// onKeyDown={}
+					onChange={({ target }) => onTodoAddChange(id, target.value)}
 				/>
 			) : (
-				<div
-					onDoubleClick={
-						!isDisabledButton ? () => onTodoTitleEdit(id) : null
-					}
-					className="todo-item__text">
+				<Link to={`/todo/${id}`} className="todo-item__text">
 					{todoTitle}
-				</div>
+				</Link>
 			)}
 
 			<div className="todo-item__actions">
 				{isEditing ? (
 					<>
 						<Button
-							onClick={() => onTodoTitleSave(id)}
+							onClick={() => onTodoAddSave(id)}
 							className="todo-item__button">
 							<FontAwesomeIcon
 								className="todo-item__icon"
@@ -76,7 +107,7 @@ export const TodoItem = ({ id, todoTitle, isDone, isEditing }) => {
 						</Button>
 
 						<Button
-							onClick={() => onTodoTitleCancel(id)}
+							onClick={() => onTodoAddCancel(id)}
 							className="todo-item__button">
 							<FontAwesomeIcon
 								className="todo-item__icon"
@@ -85,27 +116,7 @@ export const TodoItem = ({ id, todoTitle, isDone, isEditing }) => {
 						</Button>
 					</>
 				) : (
-					<>
-						<Button
-							isDisabledButton={isDisabledButton}
-							onClick={() => onTodoTitleEdit(id)}
-							className="todo-item__button">
-							<FontAwesomeIcon
-								className="todo-item__icon"
-								icon={faPenToSquare}
-							/>
-						</Button>
-
-						<Button
-							isDisabledButton={isDisabledButton}
-							onClick={() => onTodoTitleDelete(id)}
-							className="todo-item__button">
-							<FontAwesomeIcon
-								className="todo-item__icon todo-item__icon--delete"
-								icon={faTrash}
-							/>
-						</Button>
-					</>
+					<></>
 				)}
 			</div>
 		</li>

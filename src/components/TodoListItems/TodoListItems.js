@@ -9,7 +9,7 @@ export const TodoListItems = () => {
 	const { todoList } = useContext(TodoListContext);
 
 	return (
-		<ul className="app__list fa-ul2">
+		<ul className="app__list">
 			{todoList.map(({ id, todoTitle, isDone, isEditing = false }) => (
 				<TodoItem
 					key={id}

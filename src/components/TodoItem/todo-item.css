@@ -22,8 +22,13 @@
     text-align: justify;
     text-indent: 30px;
     padding-left: 15px;
+    text-decoration: none;
 }
 
+.todo-item__text:hover {
+    color: rgb(255 212 59);
+    font-weight: bold;
+}
 .todo-item--done .todo-item__text {
     text-decoration: line-through;
 }

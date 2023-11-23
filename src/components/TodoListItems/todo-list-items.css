@@ -1,7 +1,8 @@
+.app__list {
+    padding-left: 0;
+    width: 100%;
+}
 
-.fa-ul2 {
-    list-style-type: none;
-    margin-left: var(--fa-li-margin, 2.5em);
-    padding-left: 0; }
-.fa-ul2 > li {
-    position: relative; }
+.app__list > li {
+    position: relative;
+}

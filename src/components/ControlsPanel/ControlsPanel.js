@@ -12,10 +12,15 @@ import {
 	faMagnifyingGlass,
 	faArrowDownUpAcrossLine,
 } from '@fortawesome/free-solid-svg-icons';
+import { addTodo } from '../../utilities/add-todo';
 
 export function ControlsPanel() {
-	const { isDisabledButton, onTodoTitleAdd } = useContext(TodoListContext);
+	const { todoList, setTodoList, isDisabledButton } =
+		useContext(TodoListContext);
 
+	const onTodoTitleAdd = () => {
+		setTodoList(addTodo(todoList));
+	};
 	return (
 		<div>
 			<Input isDisabledInput={isDisabledButton}>
