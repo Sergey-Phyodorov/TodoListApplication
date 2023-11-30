@@ -6,8 +6,8 @@
       "id": 1
     },
     {
-      "todoTitle": "Записаться на тренировку, выбрать тренера,  выбрать программу занятий, создать график занятий.",
-      "isDone": true,
+      "todoTitle": "Записаться на тренировку, выбрать тренера,  выбрать программу занятий, создать график занятий. dsf fds",
+      "isDone": false,
       "id": 2
     },
     {
@@ -16,7 +16,7 @@
       "id": 5
     },
     {
-      "todoTitle": "Прочитать главу книги",
+      "todoTitle": "Прочитать главу книги 1",
       "isDone": true,
       "id": 6
     },
@@ -27,32 +27,32 @@
     },
     {
       "todoTitle": "Сделать генеральную уборку",
-      "isDone": false,
+      "isDone": true,
       "id": 11
     },
     {
       "todoTitle": "Походить на прогулку в парке",
-      "isDone": false,
+      "isDone": true,
       "id": 12
     },
     {
       "todoTitle": "Обновить резюме для поиска работы",
-      "isDone": false,
+      "isDone": true,
       "id": 13
     },
     {
       "todoTitle": "Изучить новый рецепт блюда",
-      "isDone": false,
+      "isDone": true,
       "id": 14
     },
     {
       "todoTitle": "Зарегистрироваться на семинар",
-      "isDone": false,
+      "isDone": true,
       "id": 15
     },
     {
       "todoTitle": "Начать курс по изучению иностранного языка",
-      "isDone": false,
+      "isDone": true,
       "id": 16
     },
     {
@@ -62,12 +62,12 @@
     },
     {
       "todoTitle": "Подарить цветы близким",
-      "isDone": false,
+      "isDone": true,
       "id": 18
     },
     {
       "todoTitle": "Запланировать поездку на выходные",
-      "isDone": false,
+      "isDone": true,
       "id": 19
     },
     {
@@ -77,7 +77,7 @@
     },
     {
       "todoTitle": "Написать статью для блога",
-      "isDone": false,
+      "isDone": true,
       "id": 21
     },
     {
@@ -87,7 +87,7 @@
     },
     {
       "todoTitle": "Протестировать новое приложение",
-      "isDone": false,
+      "isDone": true,
       "id": 23
     },
     {
@@ -107,7 +107,7 @@
     },
     {
       "todoTitle": "Записать новое видео для YouTube-канала",
-      "isDone": false,
+      "isDone": true,
       "id": 28
     },
     {
@@ -117,7 +117,7 @@
     },
     {
       "todoTitle": "Приготовить ужин для семьи",
-      "isDone": false,
+      "isDone": true,
       "id": 31
     },
     {
@@ -169,6 +169,11 @@
       "todoTitle": "Купить новые зимние ботинки",
       "isDone": false,
       "id": 41
+    },
+    {
+      "todoTitle": "sdfsdf d dd",
+      "isDone": false,
+      "id": 42
     }
   ]
 }

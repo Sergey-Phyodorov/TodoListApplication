@@ -17,8 +17,17 @@ import { findTodo } from '../../utilities/find-todo';
 import { createTodo, updateTodo } from '../../api/api';
 import { addTodo } from '../../utilities/add-todo';
 
-export const TodoItem = ({ id, todoTitle, isDone, isEditing }) => {
-	const { todoList, setTodoList } = useContext(TodoListContext);
+import { useDispatch, useSelector } from 'react-redux';
+import { selectTodoList } from '../../redux/selectors/selectTodoList';
+import { updateTodoAction } from '../../redux/action/updateTodoAction';
+
+export const TodoItem = ({ id, isEditing }) => {
+	const todoList = useSelector(selectTodoList) || [];
+	const dispatch = useDispatch();
+
+	const { todoTitle, isDone } = findTodo(todoList, id);
+
+	const { todoList2, setTodoList } = useContext(TodoListContext);
 
 	const [todoListCanselEdit, setTodoListCanselEdit] = useState(todoList);
 	const onTodoAddCancel = (id) => {
@@ -55,17 +64,13 @@ export const TodoItem = ({ id, todoTitle, isDone, isEditing }) => {
 			setTodoList(updatedList);
 		});
 	};
-
-	const onTodoIsDone = (id) => {
-		const isDone = findTodo(todoList, id).isDone;
-		const updatedList = setTodo(todoList, { id, isDone: !isDone });
-		updateTodo(id, { isDone: !isDone }).then();
-		setTodoList(updatedList);
+	const onTodoIsDone = (id, isDone) => {
+		dispatch(updateTodoAction(id, { isDone: !isDone }));
 	};
 
 	return (
 		<li className={`todo-item ${isDone ? 'todo-item--done' : ''}`}>
-			<Button onClick={() => onTodoIsDone(id)}>
+			<Button onClick={() => onTodoIsDone(id, isDone)}>
 				{isDone ? (
 					<FontAwesomeIcon
 						className="todo-item__icon"

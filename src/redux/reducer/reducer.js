@@ -1,25 +1,35 @@
 export const initialState = {
 	todoList: [],
 };
-export const appReducer = (state = initialState, action) => {
+export const reducer = (state = initialState, action) => {
 	const { type, payload } = action;
 
 	switch (type) {
+		case 'INITIAL_TODO_LIST': {
+			return {
+				...state,
+				todoList: payload,
+			};
+		}
+
+		case 'GET_DESCRIPTION_TODO': {
+			return {
+				...state,
+				todoList: payload,
+			};
+		}
 		case 'SET_TODO_LIST': {
-			console.log('SET_TODO_LIST payload', payload);
 			return {
 				...state,
 				todoList: payload,
 			};
 		}
 		case 'ADD_TODO': {
-			console.log('ADD_TODO payload', payload);
 			return {
 				...state,
 				todoList: [...state.todoList, payload],
 			};
 		}
-
 		case 'DELETE_TODO': {
 			return {
 				...state,

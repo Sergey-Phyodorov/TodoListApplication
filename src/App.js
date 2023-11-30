@@ -1,4 +1,3 @@
-import './App.css';
 import { Routes, Route } from 'react-router-dom';
 import { readTodo } from './api/api';
 
@@ -9,8 +8,8 @@ import { TodoListContext } from './context/todo-list-context';
 import { HomePage } from './pages/HomePage/HomePage';
 import { NotFoundPage } from './pages/NotFoundPage/NotFoundPage';
 
-import { Header } from './components/Header/Header';
 import { ItemCardPage } from './pages/ItemCardPage/ItemCardPage';
+import { MainLayout } from './pages/MainLayout/MainLayout';
 
 function App() {
 	const [todoList, setTodoList] = useState([]);
@@ -25,20 +24,13 @@ function App() {
 				todoList,
 				setTodoList,
 			}}>
-			<div className="app">
-				<main className="app__main">
-					<Header />
-					<Routes>
-						<Route path="/" element={<HomePage />} />
-						<Route
-							path="/todo/:idTodoPage"
-							element={<ItemCardPage />}
-						/>
-
-						<Route path="*" element={<NotFoundPage />} />
-					</Routes>
-				</main>
-			</div>
+			<Routes>
+				<Route element={<MainLayout />}>
+					<Route path="/" element={<HomePage />} />
+					<Route path="todo/:idTodoPage" element={<ItemCardPage />} />
+					<Route path="*" element={<NotFoundPage />} />
+				</Route>
+			</Routes>
 		</TodoListContext.Provider>
 	);
 }

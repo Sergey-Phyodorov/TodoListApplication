@@ -1,9 +1,9 @@
-.app {
+.main-layout {
     text-align: center;
     background-color: #282c34;
 }
 
-.app__main {
+.main-layout__main {
     min-height: 100vh;
     display: flex;
     flex-direction: column;
@@ -13,7 +13,4 @@
     margin-right: auto;
     padding: 0 80px;
 }
-
-
-
 

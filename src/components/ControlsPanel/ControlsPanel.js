@@ -13,13 +13,20 @@ import {
 	faArrowDownUpAcrossLine,
 } from '@fortawesome/free-solid-svg-icons';
 import { addTodo } from '../../utilities/add-todo';
+import { useSelector } from 'react-redux';
+import { selectTodoList } from '../../redux/selectors/selectTodoList';
 
 export function ControlsPanel() {
-	const { todoList, setTodoList, isDisabledButton } =
+	const { todoList2, setTodoList, isDisabledButton } =
 		useContext(TodoListContext);
+	console.log(isDisabledButton);
 
+	const todoList = useSelector(selectTodoList);
+	console.log(todoList);
 	const onTodoTitleAdd = () => {
+		console.log('onTodoTitleAdd');
 		setTodoList(addTodo(todoList));
+		console.log(todoList);
 	};
 	return (
 		<div>
