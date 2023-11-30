@@ -1,7 +1,6 @@
 import './controls-panel.css';
 
-import { useContext } from 'react';
-import { TodoListContext } from '../../context/todo-list-context';
+import { useState } from 'react';
 
 import { Input } from '../../ui/Input/Input';
 import { Button } from '../../ui/Button/Button';
@@ -12,21 +11,15 @@ import {
 	faMagnifyingGlass,
 	faArrowDownUpAcrossLine,
 } from '@fortawesome/free-solid-svg-icons';
-import { addTodo } from '../../utilities/add-todo';
-import { useSelector } from 'react-redux';
-import { selectTodoList } from '../../redux/selectors/selectTodoList';
+import { useDispatch } from 'react-redux';
+import { addTodoAction } from '../../redux/action/addTodoAction';
 
 export function ControlsPanel() {
-	const { todoList2, setTodoList, isDisabledButton } =
-		useContext(TodoListContext);
-	console.log(isDisabledButton);
+	const [isDisabledButton, setIsDisabledButton] = useState(false);
 
-	const todoList = useSelector(selectTodoList);
-	console.log(todoList);
+	const dispatch = useDispatch();
 	const onTodoTitleAdd = () => {
-		console.log('onTodoTitleAdd');
-		setTodoList(addTodo(todoList));
-		console.log(todoList);
+		dispatch(addTodoAction());
 	};
 	return (
 		<div>

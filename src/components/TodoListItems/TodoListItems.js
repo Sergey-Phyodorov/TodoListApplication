@@ -18,15 +18,8 @@ export const TodoListItems = () => {
 
 	return (
 		<ul className="app__list">
-			{todoList.map(({ id, todoTitle, isDone, isEditing = false }) => (
-				// isEditing = false разобраться
-				<TodoItem
-					key={id}
-					id={id}
-					todoTitle={todoTitle}
-					isDone={isDone}
-					isEditing={isEditing}
-				/>
+			{todoList.map(({ id, isEditing = false }) => (
+				<TodoItem key={id} idTodo={id} isEditing={isEditing} />
 			))}
 		</ul>
 	);

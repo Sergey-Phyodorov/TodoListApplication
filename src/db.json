@@ -6,7 +6,7 @@
       "id": 1
     },
     {
-      "todoTitle": "Записаться на тренировку, выбрать тренера,  выбрать программу занятий, создать график занятий. dsf fds",
+      "todoTitle": "Записаться на тренировку, выбрать тренера,  выбрать программу занятий, создать график занятий.",
       "isDone": false,
       "id": 2
     },
@@ -21,7 +21,7 @@
       "id": 6
     },
     {
-      "todoTitle": "Заказать билеты на концерт ! s",
+      "todoTitle": "Заказать билеты на концерт.",
       "isDone": true,
       "id": 9
     },
@@ -102,7 +102,7 @@
     },
     {
       "todoTitle": "Пройти медицинский осмотр",
-      "isDone": false,
+      "isDone": true,
       "id": 27
     },
     {
@@ -171,9 +171,19 @@
       "id": 41
     },
     {
-      "todoTitle": "sdfsdf d dd",
+      "todoTitle": "sdf  sadf adsf",
       "isDone": false,
       "id": 42
+    },
+    {
+      "todoTitle": "",
+      "isDone": false,
+      "id": 43
+    },
+    {
+      "todoTitle": "asdsad",
+      "isDone": false,
+      "id": 44
     }
   ]
 }

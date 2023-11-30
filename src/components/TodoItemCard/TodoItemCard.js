@@ -1,4 +1,3 @@
-import { useContext, useState } from 'react';
 import '../TodoItem/todo-item.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
@@ -8,62 +7,65 @@ import {
 	faTrash,
 } from '@fortawesome/free-solid-svg-icons';
 import { Button } from '../../ui/Button/Button';
-import { TodoListContext } from '../../context/todo-list-context';
+
+import { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+import { selectTodoList } from '../../redux/selectors/selectTodoList';
+import { useDispatch, useSelector } from 'react-redux';
+import { todoChangeAction } from '../../redux/action/todoChangeAction';
+import { updateTodoAction } from '../../redux/action/updateTodoAction';
+import { deleteTodoAction } from '../../redux/action/deleteTodoAction';
+
 import { findTodo } from '../../utilities/find-todo';
-import { deleteTodo, updateTodo } from '../../api/api';
-import { setTodo } from '../../utilities/set-todo';
-import { removeTodo } from '../../utilities/remove-todo';
+import { selectTodo } from '../../redux/selectors/selectTodo';
 
 export const TodoItemCard = () => {
 	const navigate = useNavigate();
-	const { todoList, setTodoList } = useContext(TodoListContext);
+	const todoList = useSelector(selectTodoList) || [];
 
 	const { idTodoPage } = useParams();
-
 	const { todoTitle, isDone, id } =
-		findTodo(todoList, Number(idTodoPage)) || {};
+		useSelector(selectTodo(Number(idTodoPage))) || {};
+	const dispatch = useDispatch();
 
-	const [todoDescription, setTodoDescription] = useState(todoTitle);
 	const [todoDescriptionIsEditCancel, setTodoDescriptionIsEditCancel] =
-		useState(todoDescription);
+		useState(todoTitle);
 	const [isEditing, setIsEditing] = useState(false);
 
-	const onTodoDescriptionEdit = (id) => {
-		const { todoTitle } = findTodo(todoList, id);
+	const onTodoDescriptionEdit = () => {
 		setTodoDescriptionIsEditCancel(todoTitle);
 		setIsEditing(!isEditing);
 	};
-	const onTodoDescriptionEditChange = (id, changDescription) => {
-		setTodoDescription(changDescription);
+	const onTodoDescriptionEditChange = (idTodo, changDescription) => {
+		dispatch(todoChangeAction({ id: idTodo, todoTitle: changDescription }));
 	};
-	const onTodoDescriptionEditCancel = () => {
-		setTodoDescription(todoDescriptionIsEditCancel);
+	const onTodoDescriptionEditCancel = (idTodo) => {
+		dispatch(
+			updateTodoAction(idTodo, {
+				todoTitle: todoDescriptionIsEditCancel.todoTitle,
+			}),
+		);
+
 		setIsEditing(!isEditing);
 	};
 	const onTodoDescriptionEditSave = (idTodo) => {
-		updateTodo(idTodo, { todoTitle: todoDescription });
-		setTodoList(
-			setTodo(todoList, {
-				id: idTodo,
-				todoTitle: todoDescription,
-			}),
+		const newTodoTitle = findTodo(todoList, idTodo) || {};
+		dispatch(
+			updateTodoAction(idTodo, { todoTitle: newTodoTitle.todoTitle }),
 		);
 
 		setIsEditing(!isEditing);
 	};
 	const onTodoDelete = (id) => {
 		if (window.confirm('Вы уверены, что хотите удалить эту задачу?')) {
-			deleteTodo(id).then(() => {
-				setTodoList(removeTodo(todoList, id));
-			});
+			dispatch(deleteTodoAction(id));
 			navigate('/');
 		}
 	};
 
 	return (
 		<ul className="app__list">
-			{todoDescription === undefined ? (
+			{todoTitle === undefined ? (
 				<>
 					<div> Такой задачи не существует </div>
 					<Button
@@ -87,7 +89,7 @@ export const TodoItemCard = () => {
 							<textarea
 								className="todo-item__textarea"
 								rows="2"
-								value={todoDescription}
+								value={todoTitle}
 								onChange={({ target }) =>
 									onTodoDescriptionEditChange(
 										id,
@@ -99,7 +101,7 @@ export const TodoItemCard = () => {
 							<div
 								onDoubleClick={() => setIsEditing(!isEditing)}
 								className="todo-item__text">
-								{todoDescription}
+								{todoTitle}
 							</div>
 						)}
 
@@ -119,7 +121,7 @@ export const TodoItemCard = () => {
 
 									<Button
 										onClick={() => {
-											onTodoDescriptionEditCancel();
+											onTodoDescriptionEditCancel(id);
 										}}
 										className="todo-item__button">
 										<FontAwesomeIcon
@@ -131,9 +133,7 @@ export const TodoItemCard = () => {
 							) : (
 								<>
 									<Button
-										onClick={() =>
-											onTodoDescriptionEdit(id)
-										}
+										onClick={() => onTodoDescriptionEdit()}
 										className="todo-item__button">
 										<FontAwesomeIcon
 											className="todo-item__icon"
